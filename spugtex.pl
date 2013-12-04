@@ -1,4 +1,4 @@
-# spugtex.pl: a LaTeX symbol plugin for irssi
+## spugtex.pl: a LaTeX symbol plugin for irssi
 #
 # USAGE:
 # /math <some nice math>
@@ -11,6 +11,17 @@
 #
 #     command: /math Lambda = alpha/omega
 #     result:  Λ = α/ω
+#
+# INSTALLATION:
+#
+# Copy this file to your irssi scripts directory:
+#  
+#     $ wget -O ~/.irssi/scripts/spugtex.pl https://raw.github.com/seece/spugtex/master/spugtex.pl 
+#
+# and load the script in irssi with
+#
+#     /script load spugtex.pl
+#
 #
 
 use Irssi;
