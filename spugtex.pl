@@ -143,7 +143,7 @@ sub convert {
 
 	while (my ($name, $code) = each %symbols) {
 		my $kode = chr($code);
-		$input =~ s/(\W|^)($name)(\W|$)/$1$kode$3/g;
+		$input =~ s/(?<=\W|^)($name)(?=\W|$)/$kode/g;
 	}
 
 	$input;
