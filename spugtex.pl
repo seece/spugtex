@@ -89,7 +89,6 @@ our %symbols = (
 	'aleph' => 8501,
 	'beth' => 105,
 	'daleth' => 107,
-	'?' => 103,
 	'complement' => 123,
 	'ell' => 96,
 	'eth' => 240,
