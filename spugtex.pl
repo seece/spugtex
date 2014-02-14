@@ -26,6 +26,7 @@
 
 use Irssi;
 use Irssi::Irc;
+use Encode qw(decode encode);
 use strict;
 use warnings;
 use vars qw($VERSION %IRSSI);
@@ -134,18 +135,18 @@ our %symbols = (
 	'triangle' => 52,
 	'triangledown' => 79,
 	'varnothing' => 8709,
-
 );
 
 sub convert {
 	my $input = shift;
+	$input = decode('UTF-8', $input, Encode::FB_CROAK);
 
 	while (my ($name, $code) = each %symbols) {
 		my $kode = chr($code);
 		$input =~ s/(\W|^)\K($name)(?=\W|$)/$kode/g;
 	}
 
-	$input;
+	encode('UTF-8', $input, Encode::FB_CROAK);
 }
 
 sub cmd_math {
