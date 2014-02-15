@@ -29,6 +29,9 @@ This plugin replaces LaTeX symbol names with their respective Unicode characters
 
      /script load spugtex.pl 
 
+## On fonts
+Not all fonts support the math symbols spugtex outputs. One good choice for a terminal/IRC font is [Deja Vu Mono](http://dejavu-fonts.org/wiki/Main_Page).
+
 ## License
 MIT License, see `COPYING` for details.
 
