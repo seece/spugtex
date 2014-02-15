@@ -9,10 +9,13 @@ This plugin replaces LaTeX symbol names with their respective Unicode characters
 
 ## Usage
 `/math <some nice math>`
- Replaces the symbol keywords in your message with Unicode codepoints.
+ Replaces the symbol keywords in your message with Unicode symbols.
 
  `/mathp <some nice math>`
- Prints a preview of the message to the current window.
+ Prints a preview of the message to the current window. Alias for `/spug preview <math>`
+
+ `/spug list`
+ Lists all supported symbols to the current window.
 
 ### Examples
 

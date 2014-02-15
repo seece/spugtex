@@ -27,6 +27,7 @@
 use Irssi;
 use Irssi::Irc;
 use Encode qw(decode encode);
+use List::Util qw(min max);
 use strict;
 use warnings;
 use vars qw($VERSION %IRSSI);
@@ -95,7 +96,6 @@ our %symbols = (
 	'star' => '★' ,
 	'vee' => '∨' ,
 	'lhd' => '✁' ,
-#lhd bigcirc ∗ 
 	'circ' => '◦' ,
 	'wedge' => '∧' ,
 	'rhd' => '✄' ,
@@ -105,182 +105,65 @@ our %symbols = (
 	'ddagger' => '‡' ,
 	'cdot' => '·' ,
 	'unrhd' => '☎' ,
-#  amalg
 	'leq' => '≤' ,
 	'geq' => '≥' ,
 	'equiv' => '≡' ,
 	'models' => '|=' ,
 	'prec' => '≺' ,
-# succ
 	'sim' => '∼' ,
 	'perp' => '⊥' ,
-# preceq
-#succeq
-#simeq
 	'mid' => '|' ,
-# ll
-#gg
-# asymp
-#" parallel
 	'subset' => '⊂' ,
 	'supset' => '⊃' ,
 	'approx' => '≈' ,
-# bowtie
 	'subseteq' => '⊆' ,
 	'supseteq' => '⊇' ,
-# cong
-#✶ Join
-#❁ sqsubset
-#∗ ❂ sqsupset
 	'neq' => '≠' ,
-#? smile
-#  ) sqsubseteq
-#* sqsupseteq
-#.
-# doteq
-#" frown
 	'in' => '∈' ,
 	'ni' => '∋' ,
 	'propto' => '∝' ,
-#= =
 	'vdash' => '⊢' ,
 	'dashv' => '⊣' ,
-#< < > >
 	'leftarrow' => '←' ,
 	'longleftarrow' => '←−' ,
 	'uparrow' => '↑' ,
 	'Leftarrow' => '⇐' ,
-#⇐ Longleftarrow
 	'Uparrow' => '⇑' ,
 	'rightarrow' => '→' ,
-#−→ longrightarrow
 	'downarrow' => '↓' ,
 	'Rightarrow' => '⇒' ,
-#=⇒ Longrightarrow
 	'Downarrow' => '⇓' ,
 	'leftrightarrow' => '↔' ,
-#←→ longleftrightarrow
-#9 updownarrow
 	'Leftrightarrow' => '⇔' ,
 	'Longleftrightarrow' => '⇐⇒' ,
-#; Updownarrow
-#<→ mapsto
-#<−→ longmapsto
-#= nearrow
-#← hookleftarrow
-#$→ hookrightarrow
-# searrow
-#% leftharpoonup
-#& rightharpoonup
-#? swarrow
-#' leftharpoondown
-#( rightharpoondown
-#  @ nwarrow
-#  rightleftharpoons
 	'leadsto' => '↪' ,
-#  ∗
-#ℵ aleph
-#B prime
 	'forall' => '∀' ,
 	'infty' => '∞' ,
-#hbar
 	'emptyset' => '∅' ,
 	'exists' => '∃' ,
-#✷ Box
-#∗
 	'imath' => 'ı' ,
 	'nabla' => '∇' ,
 	'neg' => '¬' ,
-#/✸ Diamond
-#∗
-#j jmath
 	'surd' => '√' ,
-#* flat
-#I triangle
-#+ ell
-#J top
 	'natural' => '-' ,
 	'clubsuit' => '♣' ,
-#wp ℘ 
 	'bot' => '⊥' ,
-#sharp 0 
 	'diamondsuit' => '♦' ,
-#Re M 
-# \| \ backslash
 	'heartsuit' => '♥' ,
 	'Im' => 'O' ,
 	'angle' => '∠' ,
 	'partial' => '∂' ,
 	'spadesuit' => '♠' ,
 	'mho' => '✵' ,
-# ∗
-#sum
-#bigcap
-#bigodot
-#prod
-# bigcup
-#bigotimes
-#coprod
-#bigsqcup
-#bigoplus
-#Üint  bigvee
-#biguplus
-#sub oint
-#bigwedge
-#leqq
-#E leqslant
-#F eqslantless
-#G lesssim
-#H lessapprox
-#leqq
-#E leqslant
-#F eqslantless
-#G lesssim
-#H lessapprox
-#pproxeq  lessdot
 	'lll' => '≪' ,
 	'lessgtr' => '≶' ,
-#K lesseqgtr
-#L lesseqqgtr
-#M doteqdot
-#N risingdotseq
-#O fallingdotseq
-#P backsim
-#Q backsimeq
-#R subseteqq
-#S Subset
-#❁ sqsubset
-#T preccurlyeq
-#U curlyeqprec
-#V precsim
-#precapprox
-#W vartriangleleft
-#X trianglelefteq
-#Y vDash
-#Z Vvdash
-#[ smallsmile
-#\ smallfrown
-#] bumpeq
-#^ Bumpeq
-#_ geqq
-#` geqslant
-#a eqslantgtr
-#b gtrsim
-#c gtrapprox
-	'≫' => 'ggg',
-	'≷' => 'gtrless',
-#f gtreqless
-#g gtreqqless
-	'∼' => 'thicksim',
-	'≈' => 'thickapprox',
-	'❂' => 'sqsupset',
-#p vartriangleright
-#q trianglerighteq
-	'∝' => 'varpropto',
-#v blacktriangleleft
-	'∴' => 'therefore',
-#x blacktriangleright
-	'∵' => 'because',
+	'ggg'        => '≫',
+	'gtrless'    => '≷',
+	'thicksim'   => '∼', 
+	'thickapprox'=> '≈', 
+	'varpropto'  => '∝', 
+	'therefore'  => '∴',
+	'because'    => '∵', 
 );
 
 sub convert {
@@ -321,6 +204,48 @@ sub cmd_math_preview {
 	Irssi::active_win->print("Preview: $result");
 }
 
+sub cmd_math_list {
+	my $counter = 0;
+	my $line = "";
+
+	while (my ($name, $code) = each %symbols) {
+		# List symbols in two columns
+		if ($counter % 2 == 0) {
+			$line =$line . "$name: $code " ;
+		} else {
+			$line =$line ." " x (max(0,20 - length($line))) . "$name: $code " ;
+			Irssi::active_win->print($line);
+			$line = "";
+		}
+
+		$counter++;
+	}
+
+	Irssi::active_win->print($line);
+}
+
+sub cmd_math_run{
+	my ($data, $server, $witem) = @_;
+
+	if (!$data) {
+		return;
+	}
+
+	$_ = $data;
+
+	if (m/^list/i) {
+		cmd_math_list($data, $server, $witem);
+		return;
+	} elsif (m/^preview/i) {
+		$_ =~ s/^\S+\s+//;
+		cmd_math_preview($_, $server, $witem);
+		return;
+	}
+
+	Irssi::active_win->print("spugtex: Unknown command.");
+}
+
 Irssi::command_bind('math', 'cmd_math');
 Irssi::command_bind('mathp', 'cmd_math_preview');
+Irssi::command_bind('spug', 'cmd_math_run');
 
