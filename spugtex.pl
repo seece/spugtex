@@ -30,7 +30,8 @@ use Encode qw(decode encode);
 use strict;
 use warnings;
 use vars qw($VERSION %IRSSI);
-$VERSION="1.0.5";
+use utf8;
+$VERSION="1.1.0";
 
 %IRSSI = (
 	authors => 'Pekka Väänänen',
@@ -44,97 +45,242 @@ $VERSION="1.0.5";
 
 # LaTeX symbol names
 our %symbols = (
-	'Gamma' => 915,
-	'Delta' => 8710,
-	'Lambda' => 923,
-	'Phi' => 934,
-	'Pi' => 928,
-	'Psi' => 936,
-	'Sigma' => 931,
-	'Theta' => 920,
-	'Upsilon' => 933,
-	'Xi' => 926,
-	'Omega' => 8486,
-	'alpha' => 945,
-	'beta' => 946,
-	'gamma' => 947,
-	'delta' => 948,
-	'epsilon' => 15,
-	'zeta' => 950,
-	'eta' => 951,
-	'theta' => 952,
-	'iota' => 953,
-	'kappa' => 954,
-	'lambda' => 955,
-	'mu' => 181,
-	'nu' => 957,
-	'xi' => 958,
-	'pi' => 960,
-	'rho' => 961,
-	'sigma' => 963,
-	'tau' => 964,
-	'upsilon' => 965,
-	'phi' => 966,
-
-	'chi' => 967,
-	'psi' => 968,
-	'omega' => 969,
-	'digamma' => 122,
-	'varepsilon' => 949,
-	'varkappa' => 954,
-	'varphi' => 981,
-	'varpi' => 36,
-	'varrho' => 37,
-	'varsigma' => 962,
-	'vartheta' => 977,
-	'aleph' => 8501,
-	'beth' => 105,
-	'daleth' => 107,
-	'complement' => 123,
-	'ell' => 96,
-	'eth' => 240,
-	'hbar' => 126,
-	'hslash' => 125,
-	'mho' => 102,
-	'partial' => 8706,
-	'wp' => 8472,
-	'circledS' => 115,
-	'Bbbk' => 107,
-	'Finv' => 96,
-	'Game' => 97,
-	'angle' => 8736,
-	'backprime' => 56,
-	'bigstar' => 70,
-	'blacklozenge' => 7,
-	'blacksquare' => 4,
-	'blacktriangle' => 78,
-	'blacktriangledown' => 72,
-	'bot' => 8869,
-	'clubsuit' => 9827,
-	'diagdown' => 31,
-	'diagup' => 30,
-	'diamondsuit' => 9830,
-	'emptyset' => 8709,
-	'exists' => 8707,
-	'flat' => 91,
-	'forall' => 8704,
-	'heartsuit' => 9829,
-	'infty' => 8734,
-	'lozenge' => 9830,
-	'measuredangle' => 93,
-	'nabla' => 8711,
-	'natural' => 92,
-	'neg' => 172,
-	'nexists' => 64,
-	'prime' => 48,
-	'sharp' => 93,
-	'spadesuit' => 9824,
-	'sphericalangle' => 94,
-	'surd' => 8730,
-	'top' => 62,
-	'triangle' => 52,
-	'triangledown' => 79,
-	'varnothing' => 8709,
+	'alpha' => 'α',
+	'theta' => 'θ' ,
+	'tau' => 'τ' ,
+	'beta' => 'β' ,
+	'vartheta' => 'ϑ' ,
+	'pi' => 'π' ,
+	'upsilon' => 'υ' ,
+	'gamma' => 'γ' ,
+	'iota' => 'ι' ,
+	'phi' => 'φ' ,
+	'delta' => 'δ' ,
+	'kappa' => 'κ' ,
+	'rho' => 'ρ' ,
+	'varphi' => 'ϕ' ,
+	'epsilon' => 'ϵ',
+	'lambda' => 'λ' ,
+	'chi' => 'χ' ,
+	'varepsilon' => 'ε' ,
+	'mu' => 'μ' ,
+	'sigma' => 'σ' ,
+	'psi' => 'ψ' ,
+	'zeta' => 'ζ' ,
+	'nu' => 'ν' ,
+	'varsigma' => 'ς' ,
+	'omega' => 'ω' ,
+	'eta' => 'η' ,
+	'xi' => 'ξ' ,
+	'Gamma' => 'Γ' ,
+	'Lambda' => 'Λ' ,
+	'Sigma' => 'Σ' ,
+	'Psi' => 'Ψ' ,
+	'Delta' => 'Δ' ,
+	'Xi' => 'Ξ' ,
+	'Upsilon' => 'Υ' ,
+	'Omega' => 'Ω' ,
+	'Theta' => 'Θ' ,
+	'Pi' => 'Π' ,
+	'Phi' => 'Φ' ,
+	'pm' => '±' ,
+	'cap' => '∩' ,
+	'oplus' => '⊕' ,
+	'mp' => '∓' ,
+	'cup' => '∪' ,
+	'times' => '×' ,
+	'otimes' => '⊗' ,
+	'div' => '÷' ,
+	'ast' => '∗' ,
+	'star' => '★' ,
+	'vee' => '∨' ,
+	'lhd' => '✁' ,
+#lhd bigcirc ∗ 
+	'circ' => '◦' ,
+	'wedge' => '∧' ,
+	'rhd' => '✄' ,
+	'dagger' => '†' ,
+	'bullet' => '•' ,
+	'unlhd' => '✂' ,
+	'ddagger' => '‡' ,
+	'cdot' => '·' ,
+	'unrhd' => '☎' ,
+#  amalg
+	'leq' => '≤' ,
+	'geq' => '≥' ,
+	'equiv' => '≡' ,
+	'models' => '|=' ,
+	'prec' => '≺' ,
+# succ
+	'sim' => '∼' ,
+	'perp' => '⊥' ,
+# preceq
+#succeq
+#simeq
+	'mid' => '|' ,
+# ll
+#gg
+# asymp
+#" parallel
+	'subset' => '⊂' ,
+	'supset' => '⊃' ,
+	'approx' => '≈' ,
+# bowtie
+	'subseteq' => '⊆' ,
+	'supseteq' => '⊇' ,
+# cong
+#✶ Join
+#❁ sqsubset
+#∗ ❂ sqsupset
+	'neq' => '≠' ,
+#? smile
+#  ) sqsubseteq
+#* sqsupseteq
+#.
+# doteq
+#" frown
+	'in' => '∈' ,
+	'ni' => '∋' ,
+	'propto' => '∝' ,
+#= =
+	'vdash' => '⊢' ,
+	'dashv' => '⊣' ,
+#< < > >
+	'leftarrow' => '←' ,
+	'longleftarrow' => '←−' ,
+	'uparrow' => '↑' ,
+	'Leftarrow' => '⇐' ,
+#⇐ Longleftarrow
+	'Uparrow' => '⇑' ,
+	'rightarrow' => '→' ,
+#−→ longrightarrow
+	'downarrow' => '↓' ,
+	'Rightarrow' => '⇒' ,
+#=⇒ Longrightarrow
+	'Downarrow' => '⇓' ,
+	'leftrightarrow' => '↔' ,
+#←→ longleftrightarrow
+#9 updownarrow
+	'Leftrightarrow' => '⇔' ,
+	'Longleftrightarrow' => '⇐⇒' ,
+#; Updownarrow
+#<→ mapsto
+#<−→ longmapsto
+#= nearrow
+#← hookleftarrow
+#$→ hookrightarrow
+# searrow
+#% leftharpoonup
+#& rightharpoonup
+#? swarrow
+#' leftharpoondown
+#( rightharpoondown
+#  @ nwarrow
+#  rightleftharpoons
+	'leadsto' => '↪' ,
+#  ∗
+#ℵ aleph
+#B prime
+	'forall' => '∀' ,
+	'infty' => '∞' ,
+#hbar
+	'emptyset' => '∅' ,
+	'exists' => '∃' ,
+#✷ Box
+#∗
+	'imath' => 'ı' ,
+	'nabla' => '∇' ,
+	'neg' => '¬' ,
+#/✸ Diamond
+#∗
+#j jmath
+	'surd' => '√' ,
+#* flat
+#I triangle
+#+ ell
+#J top
+	'natural' => '-' ,
+	'clubsuit' => '♣' ,
+#wp ℘ 
+	'bot' => '⊥' ,
+#sharp 0 
+	'diamondsuit' => '♦' ,
+#Re M 
+# \| \ backslash
+	'heartsuit' => '♥' ,
+	'Im' => 'O' ,
+	'angle' => '∠' ,
+	'partial' => '∂' ,
+	'spadesuit' => '♠' ,
+	'mho' => '✵' ,
+# ∗
+#sum
+#bigcap
+#bigodot
+#prod
+# bigcup
+#bigotimes
+#coprod
+#bigsqcup
+#bigoplus
+#Üint  bigvee
+#biguplus
+#sub oint
+#bigwedge
+#leqq
+#E leqslant
+#F eqslantless
+#G lesssim
+#H lessapprox
+#leqq
+#E leqslant
+#F eqslantless
+#G lesssim
+#H lessapprox
+#pproxeq  lessdot
+	'lll' => '≪' ,
+	'lessgtr' => '≶' ,
+#K lesseqgtr
+#L lesseqqgtr
+#M doteqdot
+#N risingdotseq
+#O fallingdotseq
+#P backsim
+#Q backsimeq
+#R subseteqq
+#S Subset
+#❁ sqsubset
+#T preccurlyeq
+#U curlyeqprec
+#V precsim
+#precapprox
+#W vartriangleleft
+#X trianglelefteq
+#Y vDash
+#Z Vvdash
+#[ smallsmile
+#\ smallfrown
+#] bumpeq
+#^ Bumpeq
+#_ geqq
+#` geqslant
+#a eqslantgtr
+#b gtrsim
+#c gtrapprox
+	'≫' => 'ggg',
+	'≷' => 'gtrless',
+#f gtreqless
+#g gtreqqless
+	'∼' => 'thicksim',
+	'≈' => 'thickapprox',
+	'❂' => 'sqsupset',
+#p vartriangleright
+#q trianglerighteq
+	'∝' => 'varpropto',
+#v blacktriangleleft
+	'∴' => 'therefore',
+#x blacktriangleright
+	'∵' => 'because',
 );
 
 sub convert {
@@ -142,8 +288,8 @@ sub convert {
 	$input = decode('UTF-8', $input, Encode::FB_CROAK);
 
 	while (my ($name, $code) = each %symbols) {
-		my $kode = chr($code);
-		$input =~ s/(\W|^)\K($name)(?=\W|$)/$kode/g;
+		#my $kode = chr($code);
+		$input =~ s/(\W|^)\K($name)(?=\W|$)/$code/g;
 	}
 
 	encode('UTF-8', $input, Encode::FB_CROAK);
