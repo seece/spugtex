@@ -288,7 +288,6 @@ sub convert {
 	$input = decode('UTF-8', $input, Encode::FB_CROAK);
 
 	while (my ($name, $code) = each %symbols) {
-		#my $kode = chr($code);
 		$input =~ s/(\W|^)\K($name)(?=\W|$)/$code/g;
 	}
 
