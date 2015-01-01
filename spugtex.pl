@@ -185,6 +185,12 @@ sub cmd_math {
 		return;
 	}
 
+	if (!$witem || 
+            !($witem->{type} eq "CHANNEL" || $witem->{type} eq "QUERY")) {
+		Irssi:print("Not on active channel or query, try mathp instead");
+		return;
+	}
+
 	if (!$data) {
 		return;
 	}
